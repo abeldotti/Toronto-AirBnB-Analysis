@@ -4,7 +4,7 @@
 SELECT * FROM dbo.listings;
 
 
- --Grouping by price per neighbourhood
+ -- Grouping by price per neighbourhood
 
 
 SELECT DISTINCT neighbourhood, AVG (price) AS avg_price
@@ -12,7 +12,7 @@ FROM listings
 GROUP BY neighbourhood
 
 
---Grouping by neighbourhoods and price
+-- Grouping by neighbourhoods and price
 
 SELECT DISTINCT neighbourhood, 
 AVG (price) OVER (PARTITION BY neighbourhood) AS avg_price
