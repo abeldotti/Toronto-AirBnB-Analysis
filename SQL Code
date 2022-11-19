@@ -1,0 +1,79 @@
+
+
+
+SELECT * FROM dbo.listings;
+
+
+ --Grouping by price per neighbourhood
+
+
+SELECT DISTINCT neighbourhood, AVG (price) AS avg_price
+FROM listings
+GROUP BY neighbourhood
+
+
+--Grouping by neighbourhoods and price
+
+SELECT DISTINCT neighbourhood, 
+AVG (price) OVER (PARTITION BY neighbourhood) AS avg_price
+FROM listings
+ORDER BY neighbourhood
+  
+  
+-- Counting number of aibnb per neighbouhood
+  
+SELECT DISTINCT neighbourhood, 
+COUNT (id) AS number_of_airbnb
+FROM listings
+GROUP BY neighbourhood
+ORDER BY number_of_airbnb
+
+
+-- Counting number of Airbnb per neighbourhood
+
+SELECT TOP 10 neighbourhood, COUNT (id) AS number_of_airbnb
+FROM listings
+GROUP BY neighbourhood
+HAVING COUNT (id) >= 160
+ORDER BY neighbourhood DESC;
+  
+  
+-- Price per neighbourhood, considering number of Airbnb available
+  
+SELECT DISTINCT TOP 5 neighbourhood, 
+AVG (price) OVER (PARTITION BY neighbourhood) AS avg_price, COUNT (id) OVER (PARTITION BY neighbourhood) AS number_of_airbnb
+FROM listings
+GROUP BY price, neighbourhood, id
+ORDER BY avg_price DESC, number_of_airbnb
+  
+  
+-- Number of Room Types available
+
+SELECT room_type, COUNT (room_type) AS number_of_airbnb
+FROM listings
+GROUP BY room_type
+ORDER BY room_type DESC
+  
+  
+-- Average price and number of airbnb available per room type
+  
+SELECT DISTINCT room_type, 
+AVG (price) OVER (PARTITION BY room_type) AS avg_price, COUNT (id) OVER (PARTITION BY room_type) AS number_of_airbnb
+FROM listings
+GROUP BY price, room_type, id
+ORDER BY avg_price DESC, number_of_airbnb
+  
+  
+-- Average price per room type in each neighbourhood
+  
+SELECT DISTINCT neighbourhood, room_type, AVG (price) AS avg_price
+FROM listings
+GROUP BY room_type, neighbourhood
+ORDER BY neighbourhood, room_type
+
+
+-- Availability throughout the year
+
+SELECT DISTINCT neighbourhood, AVG (availability_365) AS availability
+FROM listings
+GROUP BY neighbourhood
