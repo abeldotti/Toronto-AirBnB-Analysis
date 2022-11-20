@@ -20,7 +20,7 @@ FROM listings
 ORDER BY neighbourhood
   
   
--- Counting number of aibnb per neighbouhood
+-- Counting number of airbnb per neighbouhood
   
 SELECT DISTINCT neighbourhood, 
 COUNT (id) AS number_of_airbnb
